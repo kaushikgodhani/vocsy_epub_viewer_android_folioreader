@@ -1,15 +1,17 @@
 package com.folioreader.ui.view
-
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.util.AttributeSet
 import android.util.Log
 import android.view.*
 import android.webkit.JavascriptInterface
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.GestureDetectorCompat
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.folioreader.R
+import com.folioreader.ui.fragment.FolioPageFragment
 
 class WebViewPager : ViewPager {
 
@@ -67,13 +69,24 @@ class WebViewPager : ViewPager {
                 }
             }
 
+
             override fun onPageSelected(position: Int) {
+//
                 Log.v(LOG_TAG, "-> onPageSelected -> $position")
+//                val intent = Intent(this@WebViewPager.context,FolioPageFragment::class.java).apply {
+//                    putExtra("pageNo", position)
+//                }
+//                Log.v(LOG_TAG, "-> Position -> $position")
+//                context.startActivity(intent)
             }
 
-            override fun onPageScrollStateChanged(state: Int) {}
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
         })
     }
+
 
     private fun getScrollStateString(state: Int): String {
         return when (state) {

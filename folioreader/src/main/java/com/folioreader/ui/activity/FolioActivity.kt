@@ -976,7 +976,8 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             }
 
             override fun onPageSelected(position: Int) {
-                Log.v(LOG_TAG, "-> onPageSelected -> DirectionalViewpager -> position = $position")
+                Log.v(LOG_TAG, "-> onPageSelected value -> DirectionalViewpager -> position = $position")
+
 
                 EventBus.getDefault().post(
                     MediaOverlayPlayPauseEvent(
@@ -995,6 +996,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
                         LOG_TAG, "-> onPageScrollStateChanged -> DirectionalViewpager -> " +
                                 "position = " + position
                     )
+
 
                     var folioPageFragment =
                         mFolioPageFragmentAdapter!!.getItem(position - 1) as FolioPageFragment?

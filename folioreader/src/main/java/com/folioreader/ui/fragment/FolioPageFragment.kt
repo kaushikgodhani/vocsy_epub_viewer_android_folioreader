@@ -3,6 +3,7 @@ package com.folioreader.ui.fragment
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.Intent.getIntent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.net.Uri
@@ -53,6 +54,10 @@ import org.readium.r2.shared.Locations
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.math.ceil
+import android.content.Intent.getIntent
+
+
+
 
 /**
  * Created by mahavir on 4/2/16.
@@ -88,6 +93,7 @@ class FolioPageFragment : Fragment(),
             return fragment
         }
     }
+
 
     private lateinit var uiHandler: Handler
     private var mHtmlString: String? = null
@@ -127,7 +133,8 @@ class FolioPageFragment : Fragment(),
     var searchLocatorVisible: SearchLocator? = null
 
     private lateinit var chapterUrl: Uri
-
+    
+//    var pageNo: IntArray = activity!!.intent!!.getIntArrayExtra("pageNo")
     val pageName: String
         get() = mBookTitle + "$" + spineItem.href
 
@@ -137,6 +144,7 @@ class FolioPageFragment : Fragment(),
         }
 
     override fun onCreateView(
+
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -647,7 +655,6 @@ class FolioPageFragment : Fragment(),
             LOG_TAG, "-> setHorizontalPageCount = " + horizontalPageCount
                     + " -> " + spineItem.href
         )
-
         mWebview!!.setHorizontalPageCount(horizontalPageCount)
     }
 
@@ -659,6 +666,7 @@ class FolioPageFragment : Fragment(),
             )
         )
     }
+
 
     private fun setupScrollBar() {
         UiUtil.setColorIntToDrawable(mConfig!!.currentThemeColor, mScrollSeekbar!!.progressDrawable)
@@ -700,7 +708,13 @@ class FolioPageFragment : Fragment(),
         }
     }
 
+
     private fun updatePagesLeftText(scrollY: Int) {
+
+
+//        val intent = getIntent()
+//        val message = intent.getStringExtra("pageNo")
+//        Log.v(WebViewPager.LOG_TAG, "-> message -> $message")
         try {
             val currentPage = (ceil(scrollY.toDouble() / mWebview!!.webViewHeight) + 1).toInt()
             val totalPages =
