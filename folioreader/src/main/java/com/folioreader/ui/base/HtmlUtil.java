@@ -76,7 +76,7 @@ public final class HtmlUtil {
             toInject += "  font-family: '" + fontName + "';\n";
             toInject += "  src: url('file://" + userFontFile.getAbsolutePath() + "');\n";
             toInject += "}\n";
-            toInject += ".custom-font {\n";
+            toInject += ".custom-font, .custom-font p, .custom-font div, .custom-font span, .custom-font h1, .custom-font strong {\n";
             toInject += "  font-family: '" + fontName + "', sans-serif;\n";
             toInject += "}\n";
             toInject += "\n</style>";
