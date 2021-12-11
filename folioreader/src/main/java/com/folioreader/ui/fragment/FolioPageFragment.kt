@@ -715,7 +715,7 @@ class FolioPageFragment : Fragment(),
 //        val intent = getIntent()
 //        val message = intent.getStringExtra("pageNo")
 //        Log.v(WebViewPager.LOG_TAG, "-> message -> $message")
-        try {
+    /*    try {
             val currentPage = (ceil(scrollY.toDouble() / mWebview!!.webViewHeight) + 1).toInt()
             val totalPages =
                 ceil(mWebview!!.contentHeightVal.toDouble() / mWebview!!.webViewHeight).toInt()
@@ -752,7 +752,7 @@ class FolioPageFragment : Fragment(),
             Log.e("divide error", exp.toString())
         } catch (exp: IllegalStateException) {
             Log.e("divide error", exp.toString())
-        }
+        }*/
 
     }
 
