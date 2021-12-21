@@ -289,7 +289,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             mEpubFilePath = intent.extras!!
                 .getString(FolioActivity.INTENT_EPUB_SOURCE_PATH)
         }
-
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         initActionBar()
         initMediaController()
 

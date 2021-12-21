@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,9 +39,8 @@ public class ContentHighlightActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-
         publication = (Publication) getIntent().getSerializableExtra(Constants.PUBLICATION);
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mConfig = AppUtil.getSavedConfig(this);
         mIsNightMode = mConfig != null && mConfig.isNightMode();
         initViews();
