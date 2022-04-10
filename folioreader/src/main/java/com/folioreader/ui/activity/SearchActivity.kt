@@ -128,7 +128,7 @@ class SearchActivity : AppCompatActivity(), OnItemClickListener {
         }
 
         spineSize = intent.getIntExtra(BUNDLE_SPINE_SIZE, 0)
-        searchUri = intent.getParcelableExtra(BUNDLE_SEARCH_URI)
+        searchUri = intent.getParcelableExtra(BUNDLE_SEARCH_URI)!!
 
         searchAdapter = SearchAdapter(this)
         searchAdapter.onItemClickListener = this
@@ -159,7 +159,7 @@ class SearchActivity : AppCompatActivity(), OnItemClickListener {
         Log.v(LOG_TAG, "-> onNewIntent")
 
         if (intent.hasExtra(BUNDLE_SEARCH_URI)) {
-            searchUri = intent.getParcelableExtra(BUNDLE_SEARCH_URI)
+            searchUri = intent.getParcelableExtra(BUNDLE_SEARCH_URI)!!
         } else {
             intent.putExtra(BUNDLE_SEARCH_URI, searchUri)
             intent.putExtra(BUNDLE_SPINE_SIZE, spineSize)
@@ -174,7 +174,7 @@ class SearchActivity : AppCompatActivity(), OnItemClickListener {
     private fun handleSearch() {
         Log.v(LOG_TAG, "-> handleSearch")
 
-        val query: String = intent.getStringExtra(SearchManager.QUERY)
+        val query: String = intent.getStringExtra(SearchManager.QUERY).toString()
         val newDataBundle = Bundle()
         newDataBundle.putString(
             ListViewType.KEY,
@@ -292,7 +292,7 @@ class SearchActivity : AppCompatActivity(), OnItemClickListener {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    /*override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         val itemId = item?.itemId
 
@@ -302,8 +302,21 @@ class SearchActivity : AppCompatActivity(), OnItemClickListener {
             return true
         }
 
-        return super.onOptionsItemSelected(item)
-    }
+        return super.onOptionsItemSelected(item!!)
+    }*/
+
+    /*override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        val itemId = item?.itemId
+
+        if (itemId == R.id.itemSearch) {
+            Log.v(LOG_TAG, "-> onOptionsItemSelected -> ${item.title}")
+            //onSearchRequested()
+            return true
+        }
+
+        return super.onOptionsItemSelected(item!!)
+    }*/
 
     override fun onItemClick(
         adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>,

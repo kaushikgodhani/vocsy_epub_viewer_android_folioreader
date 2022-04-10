@@ -57,8 +57,6 @@ import kotlin.math.ceil
 import android.content.Intent.getIntent
 
 
-
-
 /**
  * Created by mahavir on 4/2/16.
  */
@@ -133,8 +131,8 @@ class FolioPageFragment : Fragment(),
     var searchLocatorVisible: SearchLocator? = null
 
     private lateinit var chapterUrl: Uri
-    
-//    var pageNo: IntArray = activity!!.intent!!.getIntArrayExtra("pageNo")
+
+    //    var pageNo: IntArray = activity!!.intent!!.getIntArrayExtra("pageNo")
     val pageName: String
         get() = mBookTitle + "$" + spineItem.href
 
@@ -398,9 +396,9 @@ class FolioPageFragment : Fragment(),
 
         mWebview!!.addJavascriptInterface(this, "Highlight")
         mWebview!!.addJavascriptInterface(this, "FolioPageFragment")
-        mWebview!!.addJavascriptInterface(webViewPager, "WebViewPager")
-        mWebview!!.addJavascriptInterface(loadingView, "LoadingView")
-        mWebview!!.addJavascriptInterface(mWebview, "FolioWebView")
+        mWebview!!.addJavascriptInterface(webViewPager!!, "WebViewPager")
+        mWebview!!.addJavascriptInterface(loadingView!!, "LoadingView")
+        mWebview!!.addJavascriptInterface(mWebview!!, "FolioWebView")
 
         mWebview!!.setScrollListener(object : FolioWebView.ScrollListener {
             override fun onScrollChange(percent: Int) {
@@ -715,44 +713,44 @@ class FolioPageFragment : Fragment(),
 //        val intent = getIntent()
 //        val message = intent.getStringExtra("pageNo")
 //        Log.v(WebViewPager.LOG_TAG, "-> message -> $message")
-    /*    try {
-            val currentPage = (ceil(scrollY.toDouble() / mWebview!!.webViewHeight) + 1).toInt()
-            val totalPages =
-                ceil(mWebview!!.contentHeightVal.toDouble() / mWebview!!.webViewHeight).toInt()
-            val pagesRemaining = totalPages - currentPage
-            val pagesRemainingStrFormat = if (pagesRemaining > 1)
-                getString(R.string.pages_left)
-            else
-                getString(R.string.page_left)
-            val pagesRemainingStr = String.format(
-                Locale.US,
-                pagesRemainingStrFormat, pagesRemaining
-            )
-
-            val minutesRemaining =
-                ceil((pagesRemaining * mTotalMinutes).toDouble() / totalPages).toInt()
-            val minutesRemainingStr: String
-            minutesRemainingStr = if (minutesRemaining > 1) {
-                String.format(
-                    Locale.US, getString(R.string.minutes_left),
-                    minutesRemaining
+        /*    try {
+                val currentPage = (ceil(scrollY.toDouble() / mWebview!!.webViewHeight) + 1).toInt()
+                val totalPages =
+                    ceil(mWebview!!.contentHeightVal.toDouble() / mWebview!!.webViewHeight).toInt()
+                val pagesRemaining = totalPages - currentPage
+                val pagesRemainingStrFormat = if (pagesRemaining > 1)
+                    getString(R.string.pages_left)
+                else
+                    getString(R.string.page_left)
+                val pagesRemainingStr = String.format(
+                    Locale.US,
+                    pagesRemainingStrFormat, pagesRemaining
                 )
-            } else if (minutesRemaining == 1) {
-                String.format(
-                    Locale.US, getString(R.string.minute_left),
-                    minutesRemaining
-                )
-            } else {
-                getString(R.string.less_than_minute)
-            }
 
-            mMinutesLeftTextView!!.text = minutesRemainingStr
-            mPagesLeftTextView!!.text = pagesRemainingStr
-        } catch (exp: java.lang.ArithmeticException) {
-            Log.e("divide error", exp.toString())
-        } catch (exp: IllegalStateException) {
-            Log.e("divide error", exp.toString())
-        }*/
+                val minutesRemaining =
+                    ceil((pagesRemaining * mTotalMinutes).toDouble() / totalPages).toInt()
+                val minutesRemainingStr: String
+                minutesRemainingStr = if (minutesRemaining > 1) {
+                    String.format(
+                        Locale.US, getString(R.string.minutes_left),
+                        minutesRemaining
+                    )
+                } else if (minutesRemaining == 1) {
+                    String.format(
+                        Locale.US, getString(R.string.minute_left),
+                        minutesRemaining
+                    )
+                } else {
+                    getString(R.string.less_than_minute)
+                }
+
+                mMinutesLeftTextView!!.text = minutesRemainingStr
+                mPagesLeftTextView!!.text = pagesRemainingStr
+            } catch (exp: java.lang.ArithmeticException) {
+                Log.e("divide error", exp.toString())
+            } catch (exp: IllegalStateException) {
+                Log.e("divide error", exp.toString())
+            }*/
 
     }
 
