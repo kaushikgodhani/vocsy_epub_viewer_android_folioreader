@@ -21,8 +21,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.folioreader.Config;
@@ -56,6 +58,7 @@ public class HomeActivity extends AppCompatActivity
                 .setOnHighlightListener(this)
                 .setReadLocatorListener(this)
                 .setOnClosedListener(this);
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getHighlightsAndSave();
 
@@ -92,6 +95,14 @@ public class HomeActivity extends AppCompatActivity
                         .openBook("file:///android_asset/john.epub");
             }
         });
+
+        Config config = AppUtil.getSavedConfig(getApplicationContext());
+        if (config == null)
+            config = new Config();
+        config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
+
+        folioReader.setConfig(config, true)
+                .openBook(R.raw.accessible_epub_3);
     }
 
     private ReadLocator getLastReadLocator() {

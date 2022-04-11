@@ -3,7 +3,6 @@ package com.folioreader.ui.fragment
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.content.Intent.getIntent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.net.Uri
@@ -24,6 +23,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.viewpager.widget.ViewPager
 import com.folioreader.Config
 import com.folioreader.FolioReader
 import com.folioreader.R
@@ -46,6 +46,7 @@ import com.folioreader.ui.view.WebViewPager
 import com.folioreader.util.AppUtil
 import com.folioreader.util.HighlightUtil
 import com.folioreader.util.UiUtil
+import com.folioreader.viewmodels.PageTrackerViewModel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -53,15 +54,17 @@ import org.readium.r2.shared.Link
 import org.readium.r2.shared.Locations
 import java.util.*
 import java.util.regex.Pattern
-import kotlin.math.ceil
-import android.content.Intent.getIntent
 
 
 /**
  * Created by mahavir on 4/2/16.
  */
-class FolioPageFragment : Fragment(),
+class FolioPageFragment(private var pageViewModel: PageTrackerViewModel) : Fragment(),
     HtmlTaskCallback, MediaControllerCallbacks, FolioWebView.SeekBarListener {
+    override fun onResume() {
+        super.onResume()
+        pageViewModel.setCurrentPage(webViewPager.currentItem + 1)
+    }
 
     companion object {
 
@@ -73,15 +76,17 @@ class FolioPageFragment : Fragment(),
         private const val BUNDLE_SPINE_ITEM = "BUNDLE_SPINE_ITEM"
         private const val BUNDLE_READ_LOCATOR_CONFIG_CHANGE = "BUNDLE_READ_LOCATOR_CONFIG_CHANGE"
         const val BUNDLE_SEARCH_LOCATOR = "BUNDLE_SEARCH_LOCATOR"
+        private const val BUNDLE_VIEW_MODEL = "BUNDLE_VIEW_MODEL"
 
         @JvmStatic
         fun newInstance(
             spineIndex: Int,
             bookTitle: String,
             spineRef: Link,
-            bookId: String
+            bookId: String,
+            viewModel: PageTrackerViewModel
         ): FolioPageFragment {
-            val fragment = FolioPageFragment()
+            val fragment = FolioPageFragment(viewModel)
             val args = Bundle()
             args.putInt(BUNDLE_SPINE_INDEX, spineIndex)
             args.putString(BUNDLE_BOOK_TITLE, bookTitle)
@@ -91,7 +96,6 @@ class FolioPageFragment : Fragment(),
             return fragment
         }
     }
-
 
     private lateinit var uiHandler: Handler
     private var mHtmlString: String? = null
@@ -109,7 +113,7 @@ class FolioPageFragment : Fragment(),
     private var loadingView: LoadingView? = null
     private var mScrollSeekbar: VerticalSeekbar? = null
     var mWebview: FolioWebView? = null
-    private var webViewPager: WebViewPager? = null
+    lateinit var webViewPager: WebViewPager
     private var mPagesLeftTextView: TextView? = null
     private var mMinutesLeftTextView: TextView? = null
     private var mActivityCallback: FolioActivityCallback? = null
@@ -142,7 +146,6 @@ class FolioPageFragment : Fragment(),
         }
 
     override fun onCreateView(
-
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -188,6 +191,8 @@ class FolioPageFragment : Fragment(),
         initAnimations()
         initWebView()
         updatePagesLeftTextBg()
+
+        Log.d("FolioPageFragment", "onCreateView: initialised $spineIndex")
 
         return mRootView
     }
@@ -377,6 +382,20 @@ class FolioPageFragment : Fragment(),
         mWebview!!.setParentFragment(this)
         webViewPager = webViewLayout.findViewById(R.id.webViewPager)
 
+        webViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                // pageViewModel.setCurrentPage(position + 1)
+            }
+
+            override fun onPageSelected(position: Int) {
+                pageViewModel.setCurrentPage(position + 1)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                // pageViewModel.setCurrentPage(webViewPager.currentItem + 1)
+            }
+        })
+
         if (activity is FolioActivityCallback)
             mWebview!!.setFolioActivityCallback((activity as FolioActivityCallback?)!!)
 
@@ -396,9 +415,9 @@ class FolioPageFragment : Fragment(),
 
         mWebview!!.addJavascriptInterface(this, "Highlight")
         mWebview!!.addJavascriptInterface(this, "FolioPageFragment")
-        mWebview!!.addJavascriptInterface(webViewPager!!, "WebViewPager")
-        mWebview!!.addJavascriptInterface(loadingView!!, "LoadingView")
-        mWebview!!.addJavascriptInterface(mWebview!!, "FolioWebView")
+        mWebview!!.addJavascriptInterface(webViewPager, "WebViewPager")
+        mWebview!!.addJavascriptInterface(loadingView, "LoadingView")
+        mWebview!!.addJavascriptInterface(mWebview, "FolioWebView")
 
         mWebview!!.setScrollListener(object : FolioWebView.ScrollListener {
             override fun onScrollChange(percent: Int) {
@@ -665,7 +684,6 @@ class FolioPageFragment : Fragment(),
         )
     }
 
-
     private fun setupScrollBar() {
         UiUtil.setColorIntToDrawable(mConfig!!.currentThemeColor, mScrollSeekbar!!.progressDrawable)
         val thumbDrawable = ContextCompat.getDrawable(activity!!, R.drawable.icons_sroll)
@@ -706,51 +724,48 @@ class FolioPageFragment : Fragment(),
         }
     }
 
-
     private fun updatePagesLeftText(scrollY: Int) {
-
-
 //        val intent = getIntent()
 //        val message = intent.getStringExtra("pageNo")
 //        Log.v(WebViewPager.LOG_TAG, "-> message -> $message")
-        /*    try {
-                val currentPage = (ceil(scrollY.toDouble() / mWebview!!.webViewHeight) + 1).toInt()
-                val totalPages =
-                    ceil(mWebview!!.contentHeightVal.toDouble() / mWebview!!.webViewHeight).toInt()
-                val pagesRemaining = totalPages - currentPage
-                val pagesRemainingStrFormat = if (pagesRemaining > 1)
-                    getString(R.string.pages_left)
-                else
-                    getString(R.string.page_left)
-                val pagesRemainingStr = String.format(
-                    Locale.US,
-                    pagesRemainingStrFormat, pagesRemaining
+    /*    try {
+            val currentPage = (ceil(scrollY.toDouble() / mWebview!!.webViewHeight) + 1).toInt()
+            val totalPages =
+                ceil(mWebview!!.contentHeightVal.toDouble() / mWebview!!.webViewHeight).toInt()
+            val pagesRemaining = totalPages - currentPage
+            val pagesRemainingStrFormat = if (pagesRemaining > 1)
+                getString(R.string.pages_left)
+            else
+                getString(R.string.page_left)
+            val pagesRemainingStr = String.format(
+                Locale.US,
+                pagesRemainingStrFormat, pagesRemaining
+            )
+
+            val minutesRemaining =
+                ceil((pagesRemaining * mTotalMinutes).toDouble() / totalPages).toInt()
+            val minutesRemainingStr: String
+            minutesRemainingStr = if (minutesRemaining > 1) {
+                String.format(
+                    Locale.US, getString(R.string.minutes_left),
+                    minutesRemaining
                 )
+            } else if (minutesRemaining == 1) {
+                String.format(
+                    Locale.US, getString(R.string.minute_left),
+                    minutesRemaining
+                )
+            } else {
+                getString(R.string.less_than_minute)
+            }
 
-                val minutesRemaining =
-                    ceil((pagesRemaining * mTotalMinutes).toDouble() / totalPages).toInt()
-                val minutesRemainingStr: String
-                minutesRemainingStr = if (minutesRemaining > 1) {
-                    String.format(
-                        Locale.US, getString(R.string.minutes_left),
-                        minutesRemaining
-                    )
-                } else if (minutesRemaining == 1) {
-                    String.format(
-                        Locale.US, getString(R.string.minute_left),
-                        minutesRemaining
-                    )
-                } else {
-                    getString(R.string.less_than_minute)
-                }
-
-                mMinutesLeftTextView!!.text = minutesRemainingStr
-                mPagesLeftTextView!!.text = pagesRemainingStr
-            } catch (exp: java.lang.ArithmeticException) {
-                Log.e("divide error", exp.toString())
-            } catch (exp: IllegalStateException) {
-                Log.e("divide error", exp.toString())
-            }*/
+            mMinutesLeftTextView!!.text = minutesRemainingStr
+            mPagesLeftTextView!!.text = pagesRemainingStr
+        } catch (exp: java.lang.ArithmeticException) {
+            Log.e("divide error", exp.toString())
+        } catch (exp: IllegalStateException) {
+            Log.e("divide error", exp.toString())
+        }*/
 
     }
 
@@ -932,5 +947,10 @@ class FolioPageFragment : Fragment(),
         Log.v(LOG_TAG, "-> clearSearchLocator -> " + spineItem.href!!)
         mWebview!!.loadUrl(getString(R.string.callClearSelection))
         searchLocatorVisible = null
+    }
+
+    fun emitPageDetails() {
+        Log.d("MYTAG", "webPageAdapter: ")
+//        return null;
     }
 }
