@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.folioreader.ui.fragment.FolioPageFragment;
+import com.folioreader.viewmodels.PageTrackerViewModel;
 
 import org.readium.r2.shared.Link;
 
@@ -26,16 +28,22 @@ public class FolioPageFragmentAdapter extends FragmentStatePagerAdapter {
     private List<Link> mSpineReferences;
     private String mEpubFileName;
     private String mBookId;
-    private ArrayList<Fragment> fragments;
-    private ArrayList<Fragment.SavedState> savedStateList;
+    private ArrayList<FolioPageFragment> fragments;
+    private ArrayList<FolioPageFragment.SavedState> savedStateList;
+    private PageTrackerViewModel viewModel;
 
     public FolioPageFragmentAdapter(FragmentManager fragmentManager, List<Link> spineReferences,
-                                    String epubFileName, String bookId) {
+                                    String epubFileName, String bookId, PageTrackerViewModel viewModel) {
         super(fragmentManager);
         this.mSpineReferences = spineReferences;
         this.mEpubFileName = epubFileName;
         this.mBookId = bookId;
-        fragments = new ArrayList<>(Arrays.asList(new Fragment[mSpineReferences.size()]));
+        fragments = new ArrayList<>(Arrays.asList(new FolioPageFragment[mSpineReferences.size()]));
+        this.viewModel = viewModel;
+
+        for (Link spineReference:spineReferences) {
+            Log.d("loop", "FolioPageFragmentAdapter: " + spineReference.toJSON());
+        }
     }
 
     @Override
@@ -47,37 +55,40 @@ public class FolioPageFragmentAdapter extends FragmentStatePagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
 
-        Fragment fragment = (Fragment) super.instantiateItem(container, position);
+        FolioPageFragment fragment = (FolioPageFragment) super.instantiateItem(container, position);
         fragments.set(position, fragment);
         return fragment;
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public FolioPageFragment getItem(int position) {
 
         if (mSpineReferences.size() == 0 || position < 0 || position >= mSpineReferences.size())
             return null;
 
-        Fragment fragment = fragments.get(position);
+        FolioPageFragment fragment = fragments.get(position);
         if (fragment == null) {
             fragment = FolioPageFragment.newInstance(position,
-                    mEpubFileName, mSpineReferences.get(position), mBookId);
+                    mEpubFileName,
+                    mSpineReferences.get(position),
+                    mBookId,
+                    viewModel);
             fragments.set(position, fragment);
         }
         return fragment;
     }
 
-    public ArrayList<Fragment> getFragments() {
+    public ArrayList<FolioPageFragment> getFragments() {
         return fragments;
     }
 
-    public ArrayList<Fragment.SavedState> getSavedStateList() {
+    public ArrayList<FolioPageFragment.SavedState> getSavedStateList() {
 
         if (savedStateList == null) {
             try {
                 Field field = FragmentStatePagerAdapter.class.getDeclaredField("mSavedState");
                 field.setAccessible(true);
-                savedStateList = (ArrayList<Fragment.SavedState>) field.get(this);
+                savedStateList = (ArrayList<FolioPageFragment.SavedState>) field.get(this);
             } catch (Exception e) {
                 Log.e(LOG_TAG, "-> ", e);
             }
