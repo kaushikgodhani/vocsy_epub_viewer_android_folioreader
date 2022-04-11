@@ -440,7 +440,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             if (!config.isShowTts)
                 menu.findItem(R.id.itemTts).isVisible = false
         } catch (e: Exception) {
-            Log.e("FOLIOREADER", e.message)
+            Log.e("FOLIOREADER", e.message.toString())
         }
 
         return true
@@ -932,12 +932,12 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
             when (data.getStringExtra(TYPE)) {
                 CHAPTER_SELECTED -> {
-                    goToChapter(data.getStringExtra(SELECTED_CHAPTER_POSITION))
+                    goToChapter(data.getStringExtra(SELECTED_CHAPTER_POSITION)!!)
 
                 }
                 HIGHLIGHT_SELECTED -> {
                     val highlightImpl = data.getParcelableExtra<HighlightImpl>(HIGHLIGHT_ITEM)
-                    currentChapterIndex = highlightImpl.pageNumber
+                    currentChapterIndex = highlightImpl!!.pageNumber
                     mFolioPageViewPager!!.currentItem = currentChapterIndex
                     val folioPageFragment = currentFragment ?: return
                     folioPageFragment.scrollToHighlightId(highlightImpl.rangy)
