@@ -213,7 +213,9 @@ class FolioWebView : WebView {
             uiHandler.post { popupWindow.dismiss() }
         }
         selectionRect = Rect()
-        uiHandler.removeCallbacks(isScrollingRunnable)
+        if(isScrollingRunnable!=null){
+            uiHandler.removeCallbacks(isScrollingRunnable!!)
+        }
         isScrollingCheckDuration = 0
         return wasShowing
     }
@@ -732,7 +734,9 @@ class FolioWebView : WebView {
             Log.i(LOG_TAG, "-> currentSelectionRect doesn't intersects viewportRect")
             uiHandler.post {
                 popupWindow.dismiss()
-                uiHandler.removeCallbacks(isScrollingRunnable)
+                if(isScrollingRunnable!=null){
+                    uiHandler.removeCallbacks(isScrollingRunnable!!)
+                }
             }
             return
         }
@@ -825,7 +829,9 @@ class FolioWebView : WebView {
             oldScrollY = scrollY
 
             isScrollingRunnable = Runnable {
-                uiHandler.removeCallbacks(isScrollingRunnable)
+                if(isScrollingRunnable!=null){
+                    uiHandler.removeCallbacks(isScrollingRunnable!!)
+                }
                 val currentScrollX = scrollX
                 val currentScrollY = scrollY
                 val inTouchMode = lastTouchAction == MotionEvent.ACTION_DOWN ||
@@ -845,15 +851,22 @@ class FolioWebView : WebView {
                     oldScrollX = currentScrollX
                     oldScrollY = currentScrollY
                     isScrollingCheckDuration += IS_SCROLLING_CHECK_TIMER
-                    if (isScrollingCheckDuration < IS_SCROLLING_CHECK_MAX_DURATION && !destroyed)
-                        uiHandler.postDelayed(isScrollingRunnable, IS_SCROLLING_CHECK_TIMER.toLong())
+                    if (isScrollingCheckDuration < IS_SCROLLING_CHECK_MAX_DURATION && !destroyed) {
+                        if(isScrollingRunnable!=null) {
+                            uiHandler.postDelayed(isScrollingRunnable!!,
+                                IS_SCROLLING_CHECK_TIMER.toLong())
+                        }
+                    }
                 }
             }
 
-            uiHandler.removeCallbacks(isScrollingRunnable)
+            if(isScrollingRunnable!=null) {
+                uiHandler.removeCallbacks(isScrollingRunnable!!)
+            }
             isScrollingCheckDuration = 0
-            if (!destroyed)
-                uiHandler.postDelayed(isScrollingRunnable, IS_SCROLLING_CHECK_TIMER.toLong())
+            if (!destroyed && isScrollingRunnable!=null) {
+                uiHandler.postDelayed(isScrollingRunnable!!, IS_SCROLLING_CHECK_TIMER.toLong())
+            }
         } else {
             Log.v(LOG_TAG, "-> doNotShowTextSelectionPopup")
         }

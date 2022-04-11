@@ -106,7 +106,7 @@ class AppUtil {
                     obj.toString()
                 )
             } catch (e: JSONException) {
-                Log.e(LOG_TAG, e.message)
+                Log.e(LOG_TAG, e.message.toString())
             }
 
         }
@@ -119,7 +119,7 @@ class AppUtil {
                     val jsonObject = JSONObject(json)
                     Config(jsonObject)
                 } catch (e: JSONException) {
-                    Log.e(LOG_TAG, e.message)
+                    Log.e(LOG_TAG, e.message.toString())
                     null
                 }
 
