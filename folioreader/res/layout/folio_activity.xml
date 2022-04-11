@@ -36,4 +36,21 @@
 
     </com.folioreader.ui.view.FolioAppBarLayout>
 
+    <TextView
+        android:id="@+id/pageCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/rounded"
+        android:elevation="10dp"
+        android:paddingStart="12dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="6dp"
+        android:textColor="#80FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/folioPageViewPager"
+        app:layout_constraintEnd_toEndOf="@+id/folioPageViewPager"
+        tools:text="1" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
