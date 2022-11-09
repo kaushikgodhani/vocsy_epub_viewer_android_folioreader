@@ -17,7 +17,7 @@ public class Constants {
 
     public static final String LOCALHOST = "http://127.0.0.1";
     public static final int DEFAULT_PORT_NUMBER = 8080;
-    public static final String STREAMER_URL_TEMPLATE = "%s:%d/%s/";
+    public static final String STREAMER_URL_TEMPLATE = "%s:%s/%s/";
     public static final String DEFAULT_STREAMER_URL = LOCALHOST + ":" + DEFAULT_PORT_NUMBER + "/";
 
     public static final String SELECTED_WORD = "selected_word";

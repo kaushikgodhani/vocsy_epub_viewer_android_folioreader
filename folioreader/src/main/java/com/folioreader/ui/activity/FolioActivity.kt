@@ -651,7 +651,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
         if (streamerUri == null) {
             streamerUri =
-                Uri.parse(String.format(STREAMER_URL_TEMPLATE, LOCALHOST, portNumber, bookFileName))
+                Uri.parse(String.format(STREAMER_URL_TEMPLATE, LOCALHOST, portNumber.toString(), bookFileName))
         }
         return streamerUri.toString()
     }
