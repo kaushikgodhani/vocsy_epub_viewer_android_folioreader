@@ -24,13 +24,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
+import android.service.autofill.Validators.or
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.Log
@@ -44,6 +48,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat.setTint
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.folioreader.Config
@@ -384,6 +389,9 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             UiUtil.setColorIntToDrawable(config.themeColor, m.findItem(R.id.itemConfig).icon)
             UiUtil.setColorIntToDrawable(config.themeColor, m.findItem(R.id.itemTts).icon)
         }
+
+        toolbar?.getOverflowIcon()?.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
+
     }
 
     override fun setNightMode() {
@@ -409,6 +417,9 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             UiUtil.setColorIntToDrawable(config.nightThemeColor, m.findItem(R.id.itemConfig).icon)
             UiUtil.setColorIntToDrawable(config.nightThemeColor, m.findItem(R.id.itemTts).icon)
         }
+
+        toolbar?.getOverflowIcon()?.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+
     }
 
     private fun initMediaController() {
@@ -423,6 +434,20 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             menuInflater.inflate(R.menu.menu_main, menu)
 
             val config = AppUtil.getSavedConfig(applicationContext)!!
+
+//            toolbar?.getOverflowIcon()?.setColorFilter(config.currentThemeColor, PorterDuff.Mode.SRC_ATOP);
+//            for (i in 0 until menu.size()) {
+//                val drawable: Drawable = menu.getItem(i).getIcon()
+//                if (drawable != null) {
+//                    drawable.mutate()
+//                    drawable.setColorFilter(
+//                        config.currentThemeColor,
+//                        PorterDuff.Mode.SRC_ATOP
+//                    )
+//                }
+//            }
+
+
             UiUtil.setColorIntToDrawable(
                     config.currentThemeColor,
                     menu.findItem(R.id.itemBookmark).icon
@@ -572,10 +597,13 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         Log.v(LOG_TAG, "-> initBook")
 
         bookFileName = FileUtil.getEpubFilename(this, mEpubSourceType!!, mEpubFilePath, mEpubRawId)
+        Log.v(LOG_TAG, "-> bookFileName $bookFileName")
+
         val path = FileUtil.saveEpubFileAndLoadLazyBook(
             this, mEpubSourceType, mEpubFilePath,
             mEpubRawId, bookFileName
         )
+        Log.e("TAG", "mPath: $path")
         val extension: Publication.EXTENSION
         var extensionString: String? = null
         try {
@@ -584,6 +612,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         } catch (e: IllegalArgumentException) {
             throw Exception("-> Unknown book file extension `$extensionString`", e)
         }
+
 
         pubBox = when (extension) {
             Publication.EXTENSION.EPUB -> {
