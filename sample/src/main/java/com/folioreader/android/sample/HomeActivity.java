@@ -72,7 +72,7 @@ public class HomeActivity extends AppCompatActivity
                 config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
 
                 folioReader.setConfig(config, true)
-                        .openBook(R.raw.accessible_epub_3);
+                        .openBook(R.raw.four);
             }
         });
 

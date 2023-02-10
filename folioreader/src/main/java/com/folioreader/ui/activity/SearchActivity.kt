@@ -274,11 +274,11 @@ class SearchActivity : AppCompatActivity(), OnItemClickListener {
 
         itemSearch.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
 
-            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+            override fun onMenuItemActionExpand(p0: MenuItem): Boolean {
                 return true
             }
 
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+            override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
                 Log.v(LOG_TAG, "-> onMenuItemActionCollapse")
                 navigateBack()
                 return false

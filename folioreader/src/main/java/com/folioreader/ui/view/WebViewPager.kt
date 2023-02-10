@@ -129,26 +129,26 @@ class WebViewPager : ViewPager {
 
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
 
-        override fun onDown(e: MotionEvent?): Boolean {
+        override fun onDown(e: MotionEvent): Boolean {
             super@WebViewPager.onTouchEvent(e)
             return true
         }
 
-        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
             //Log.d(LOG_TAG, "-> onSingleTapUp");
             lastGestureType = LastGestureType.OnSingleTapUp
             return false
         }
 
-        override fun onLongPress(e: MotionEvent?) {
+        override fun onLongPress(e: MotionEvent) {
             super.onLongPress(e)
             //Log.d(LOG_TAG, "-> onLongPress -> " + e);
             lastGestureType = LastGestureType.OnLongPress
         }
 
         override fun onScroll(
-            e1: MotionEvent?,
-            e2: MotionEvent?,
+            e1: MotionEvent,
+            e2: MotionEvent,
             distanceX: Float,
             distanceY: Float
         ): Boolean {
@@ -158,8 +158,8 @@ class WebViewPager : ViewPager {
         }
 
         override fun onFling(
-            e1: MotionEvent?,
-            e2: MotionEvent?,
+            e1: MotionEvent,
+            e2: MotionEvent,
             velocityX: Float,
             velocityY: Float
         ): Boolean {
