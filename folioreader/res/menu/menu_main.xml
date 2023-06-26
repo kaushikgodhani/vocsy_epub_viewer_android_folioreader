@@ -8,6 +8,7 @@
         android:id="@+id/itemBookmark"
         android:icon="@drawable/ic_baseline_bookmark_border_24"
         android:title="@string/menu_item_config"
+        android:visible="false"
         app:showAsAction="ifRoom"
         tools:showAsAction="always" />
 
@@ -15,6 +16,7 @@
         android:id="@+id/itemSearch"
         android:icon="@drawable/ic_search"
         android:title="@string/menu_item_search"
+        android:visible="false"
         app:showAsAction="ifRoom"
         tools:showAsAction="always" />
 
@@ -22,6 +24,7 @@
         android:id="@+id/itemConfig"
         android:icon="@drawable/icon_font"
         android:title="@string/menu_item_config"
+        android:visible="false"
         app:showAsAction="ifRoom"
         tools:showAsAction="always" />
 
