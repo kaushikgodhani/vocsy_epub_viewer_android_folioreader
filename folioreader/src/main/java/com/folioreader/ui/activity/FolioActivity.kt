@@ -29,10 +29,8 @@ import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.Parcelable
+import android.os.*
+import android.provider.Settings
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.Log
@@ -304,20 +302,25 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             pageCountTextView.text = it
         })
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
-                    this, Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if(!Environment.isExternalStorageManager()) {
+                val requestFilesAccessIntent =
+                    Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                requestFilesAccessIntent.data = Uri.parse("package:$packageName");
+                startActivityForResult(requestFilesAccessIntent, ALL_FILES_ACCESS_REQUEST);
+                return
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
                 ActivityCompat.requestPermissions(
                     this, getWriteExternalStoragePerms(), WRITE_EXTERNAL_STORAGE_REQUEST
                 )
-            } else {
-                setupBook()
+                return
             }
-        } else {
-            setupBook()
         }
+
+        setupBook()
     }
 
     private fun initActionBar() {
@@ -593,7 +596,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         val path = FileUtil.saveEpubFileAndLoadLazyBook(
             this, mEpubSourceType, mEpubFilePath, mEpubRawId, bookFileName
         )
-        Log.e("TAG", "mPath: $path")
+
         val extension: Publication.EXTENSION
         var extensionString: String? = null
         try {
@@ -963,6 +966,23 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
                 }
             }
         }
+        // request all files access permission callback
+        else if (requestCode == ALL_FILES_ACCESS_REQUEST
+            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+        ){
+            if (Environment.isExternalStorageManager()) {
+                setupBook()
+            } else {
+                tipOpenFailedAndFinished()
+            }
+        }
+    }
+
+    private fun tipOpenFailedAndFinished() {
+        Toast.makeText(
+            this, getString(R.string.cannot_access_epub_message), Toast.LENGTH_LONG
+        ).show()
+        finish()
     }
 
     override fun onDestroy() {
@@ -1173,10 +1193,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             WRITE_EXTERNAL_STORAGE_REQUEST -> if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 setupBook()
             } else {
-                Toast.makeText(
-                    this, getString(R.string.cannot_access_epub_message), Toast.LENGTH_LONG
-                ).show()
-                finish()
+                tipOpenFailedAndFinished()
             }
         }
     }
