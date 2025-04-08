@@ -3,20 +3,22 @@ apply from: '../config/quality/quality.gradle'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'maven-publish'
 
 buildscript {
     repositories {
         mavenCentral()
         maven { url "https://jitpack.io" }
-        maven { url "https://repo1.maven.org/maven2" } // default Maven central
+        maven { url "https://repo1.maven.org/maven2" }
     }
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
     }
 }
 
 allprojects {
     repositories {
+        google()
         mavenCentral()
         maven { url "https://jitpack.io" }
         maven { url "https://repo1.maven.org/maven2" }
