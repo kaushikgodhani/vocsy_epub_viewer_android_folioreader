@@ -5,8 +5,21 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+        maven { url "https://repo1.maven.org/maven2" } // default Maven central
+    }
     dependencies {
-        classpath 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+    }
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+        maven { url "https://repo1.maven.org/maven2" }
     }
 }
 
