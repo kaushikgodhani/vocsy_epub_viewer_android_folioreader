@@ -32,6 +32,7 @@
         <activity
             android:name="com.folioreader.ui.activity.SearchActivity"
             android:exported="true"
+            android:theme="@style/Theme.MyApp"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
