@@ -4,6 +4,12 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+buildscript {
+    dependencies {
+        classpath 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
+    }
+}
+
 ext {
     bintrayRepo = 'maven'
     bintrayName = 'folioreader'
@@ -80,7 +86,6 @@ apply from: '../folioreader/bintray/installv1.gradle'
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation "org.codehaus.groovy.modules.http-builder:http-builder:0.7.2"
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
     implementation "androidx.recyclerview:recyclerview:$versions.recyclerview"
