@@ -14,13 +14,13 @@ versions.androidTargetSdk = 33
 versions.androidGradlePlugin = "3.5.3"
 versions.kotlin = "1.3.72"
 
-versions.appcompat = "1.1.0"
-versions.constraintLayout = "1.1.3"
+versions.appcompat = '1.7.0'
+versions.constraintLayout = '2.2.1'
 versions.recyclerview = "1.1.0"
 versions.material = "1.0.0"
 
 versions.retrofit = "2.5.0"
-versions.jackson = "2.9.7"
+versions.jackson = '2.18.3'
 versions.gson = "2.8.5"
 
 versions.lifecycle = "2.1.0"

@@ -79,30 +79,30 @@ android {
 apply from: '../folioreader/bintray/installv1.gradle'
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.tools.build:gradle:8.9.1'
+    implementation "androidx.appcompat:appcompat:1.7.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.2.1"
+    implementation "androidx.recyclerview:recyclerview:1.4.0"
+    implementation "com.google.android.material:material:1.12.0"
+    testImplementation 'junit:junit:4.13.2'
 
-    implementation "androidx.appcompat:appcompat:$versions.appcompat"
-    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
-    implementation "androidx.recyclerview:recyclerview:$versions.recyclerview"
-    implementation "com.google.android.material:material:$versions.material"
-    testImplementation 'junit:junit:4.12'
-
-    implementation 'org.slf4j:slf4j-android:1.7.25'
+    implementation 'org.slf4j:slf4j-android:1.7.36'
     implementation 'com.daimajia.swipelayout:library:1.2.0@aar'
 
     //Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:2.1.20"
 
-    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'org.greenrobot:eventbus:3.3.1'
 
-    implementation "com.fasterxml.jackson.core:jackson-core:$versions.jackson"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:$versions.jackson"
-    implementation "com.fasterxml.jackson.core:jackson-databind:$versions.jackson"
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$versions.jackson"
-    implementation "com.google.code.gson:gson:$versions.gson"
+    implementation "com.fasterxml.jackson.core:jackson-core:2.18.3"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:2.18.3"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.18.3"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.18.3"
+    implementation 'com.google.code.gson:gson:2.13.0'
 
-    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
-    implementation "com.squareup.retrofit2:converter-jackson:$versions.retrofit"
-    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+    implementation "com.squareup.retrofit2:retrofit:2.11.0"
+    implementation "com.squareup.retrofit2:converter-jackson:2.11.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.11.0"
 
     // R2 modules
     api("com.github.codetoart:r2-shared-kotlin:$versions.r2SharedKotlin") {
@@ -114,9 +114,9 @@ dependencies {
     }
 
     // Only ReflectionUtils in Spring framework is used
-    implementation 'org.springframework:spring-core:4.3.19.RELEASE'
+    implementation 'org.springframework:spring-core:6.2.5'
 
     // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 }
 apply from: '../folioreader/bintray/bintrayv1.gradle'
