@@ -30,6 +30,7 @@ import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
@@ -304,20 +305,61 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             pageCountTextView.text = it
         })
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
-                    this, Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this, getWriteExternalStoragePerms(), WRITE_EXTERNAL_STORAGE_REQUEST
-                )
-            } else {
-                setupBook()
-            }
+
+        if (SDK_INT >= 33) {
+//            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(
+                        this, Manifest.permission.READ_MEDIA_IMAGES
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this, getWriteExternalStoragePerms(), for_35
+                    )
+                } else {
+                    setupBook()
+                }
+//            } else {
+//                setupBook()
+//            }
+
+        } else if (SDK_INT >= 30) {
+//            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(
+                        this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this, getWriteExternalStoragePerms(), WRITE_EXTERNAL_STORAGE_REQUEST
+                    )
+                } else {
+                    setupBook()
+                }
+//            } else {
+//                setupBook()
+//            }
+
         } else {
-            setupBook()
+//            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(
+                        this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this, getWriteExternalStoragePerms(), WRITE_EXTERNAL_STORAGE_REQUEST
+                    )
+                } else {
+                    setupBook()
+                }
+//            } else {
+//                setupBook()
+//            }
+
         }
+
+
+
+
+
     }
 
     private fun initActionBar() {
@@ -1165,21 +1207,55 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             )
         )
     }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults: IntArray
-    ) {
         when (requestCode) {
-            WRITE_EXTERNAL_STORAGE_REQUEST -> if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                setupBook()
-            } else {
-                Toast.makeText(
-                    this, getString(R.string.cannot_access_epub_message), Toast.LENGTH_LONG
-                ).show()
-                finish()
+            109 -> { // Replace with your actual request code
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (Build.VERSION.SDK_INT >= 33) {
+                        // Permission granted for Android 13+
+                        setupBook()
+                    } else if (Build.VERSION.SDK_INT >= 30) {
+                        // Permission granted for Android 11–12L
+                        setupBook()
+                    } else {
+                        // Permission granted for Android 10 and below
+                        setupBook()
+                    }
+                } else {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.cannot_access_epub_message),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    finish()
+                }
             }
         }
     }
+
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+//        when (requestCode) {
+//            if (SDK_INT >= 33) {
+//
+//            } else if (SDK_INT >= 30) {
+//
+//            } else {
+//
+//            }
+////            WRITE_EXTERNAL_STORAGE_REQUEST -> if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+////                setupBook()
+////            } else {
+////                Toast.makeText(
+////                    this, getString(R.string.cannot_access_epub_message), Toast.LENGTH_LONG
+////                ).show()
+////                finish()
+////            }
+//
+//
+//        }
+//    }
 
     override fun getDirection(): Config.Direction {
         return direction

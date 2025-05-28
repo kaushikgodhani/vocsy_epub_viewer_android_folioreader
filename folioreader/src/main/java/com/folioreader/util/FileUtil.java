@@ -8,7 +8,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.folioreader.BuildConfig;
+//import com.folioreader.BuildConfig;
 import com.folioreader.Constants;
 import com.folioreader.ui.activity.FolioActivity;
 

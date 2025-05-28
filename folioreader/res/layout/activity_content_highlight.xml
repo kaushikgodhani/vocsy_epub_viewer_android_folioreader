@@ -59,6 +59,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:padding="5dp"
+                    android:visibility="gone"
                     android:text="@string/highlights"
                     android:textSize="16sp" />
 
