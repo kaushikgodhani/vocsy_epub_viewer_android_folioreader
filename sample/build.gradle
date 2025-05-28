@@ -1,9 +1,12 @@
+//apply plugin: 'com.android.application'
+//apply plugin: 'checkstyle'
+//apply plugin: 'kotlin-android'
+//apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.android.application'
-apply plugin: 'checkstyle'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-
+apply plugin: 'kotlin-parcelize'
 android {
+    namespace "com.folioreader.android.sample"
 
     compileSdkVersion versions.androidCompileSdk
 
@@ -58,6 +61,8 @@ dependencies {
 
     implementation project(':folioreader')
     //implementation "com.folioreader:folioreader:$versions.folioreaderSdk"
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+//    implementation 'org.readium.r2:r2-shared:2.x.x' // Replace with the correct version
 
     implementation "com.fasterxml.jackson.core:jackson-core:$versions.jackson"
     implementation "com.fasterxml.jackson.core:jackson-annotations:$versions.jackson"

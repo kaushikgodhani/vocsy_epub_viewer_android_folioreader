@@ -37,7 +37,7 @@ import com.folioreader.util.AppUtil
 import com.folioreader.util.HighlightUtil
 import com.folioreader.util.UiUtil
 import dalvik.system.PathClassLoader
-import kotlinx.android.synthetic.main.text_selection.view.*
+//import kotlinx.android.synthetic.main.text_selection.view.*
 import org.json.JSONObject
 import org.springframework.util.ReflectionUtils
 import java.lang.ref.WeakReference
@@ -162,7 +162,7 @@ class FolioWebView : WebView {
     private inner class HorizontalGestureListener : GestureDetector.SimpleOnGestureListener() {
 
         override fun onScroll(
-            e1: MotionEvent,
+            e1: MotionEvent?,
             e2: MotionEvent,
             distanceX: Float,
             distanceY: Float
@@ -173,7 +173,7 @@ class FolioWebView : WebView {
         }
 
         override fun onFling(
-            e1: MotionEvent,
+            e1: MotionEvent?,
             e2: MotionEvent,
             velocityX: Float,
             velocityY: Float
@@ -230,7 +230,7 @@ class FolioWebView : WebView {
     private inner class VerticalGestureListener : GestureDetector.SimpleOnGestureListener() {
 
         override fun onScroll(
-            e1: MotionEvent,
+            e1: MotionEvent?,
             e2: MotionEvent,
             distanceX: Float,
             distanceY: Float
@@ -246,7 +246,7 @@ class FolioWebView : WebView {
         }
 
         override fun onFling(
-            e1: MotionEvent,
+            e1: MotionEvent?,
             e2: MotionEvent,
             velocityX: Float,
             velocityY: Float
@@ -300,46 +300,46 @@ class FolioWebView : WebView {
         viewTextSelection = LayoutInflater.from(ctw).inflate(R.layout.text_selection, null)
         viewTextSelection.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
 
-        viewTextSelection.yellowHighlight.setOnClickListener {
-            Log.v(LOG_TAG, "-> onClick -> yellowHighlight")
-            onHighlightColorItemsClicked(HighlightStyle.Yellow, false)
-        }
-        viewTextSelection.greenHighlight.setOnClickListener {
-            Log.v(LOG_TAG, "-> onClick -> greenHighlight")
-            onHighlightColorItemsClicked(HighlightStyle.Green, false)
-        }
-        viewTextSelection.blueHighlight.setOnClickListener {
-            Log.v(LOG_TAG, "-> onClick -> blueHighlight")
-            onHighlightColorItemsClicked(HighlightStyle.Blue, false)
-        }
-        viewTextSelection.pinkHighlight.setOnClickListener {
-            Log.v(LOG_TAG, "-> onClick -> pinkHighlight")
-            onHighlightColorItemsClicked(HighlightStyle.Pink, false)
-        }
-        viewTextSelection.underlineHighlight.setOnClickListener {
-            Log.v(LOG_TAG, "-> onClick -> underlineHighlight")
-            onHighlightColorItemsClicked(HighlightStyle.Underline, false)
-        }
-
-        viewTextSelection.deleteHighlight.setOnClickListener {
-            Log.v(LOG_TAG, "-> onClick -> deleteHighlight")
-            dismissPopupWindow()
-            loadUrl("javascript:clearSelection()")
-            loadUrl("javascript:deleteThisHighlight()")
-        }
-
-        viewTextSelection.copySelection.setOnClickListener {
-            dismissPopupWindow()
-            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
-        }
-        viewTextSelection.shareSelection.setOnClickListener {
-            dismissPopupWindow()
-            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
-        }
-        viewTextSelection.defineSelection.setOnClickListener {
-            dismissPopupWindow()
-            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
-        }
+//        viewTextSelection.yellowHighlight.setOnClickListener {
+//            Log.v(LOG_TAG, "-> onClick -> yellowHighlight")
+//            onHighlightColorItemsClicked(HighlightStyle.Yellow, false)
+//        }
+//        viewTextSelection.greenHighlight.setOnClickListener {
+//            Log.v(LOG_TAG, "-> onClick -> greenHighlight")
+//            onHighlightColorItemsClicked(HighlightStyle.Green, false)
+//        }
+//        viewTextSelection.blueHighlight.setOnClickListener {
+//            Log.v(LOG_TAG, "-> onClick -> blueHighlight")
+//            onHighlightColorItemsClicked(HighlightStyle.Blue, false)
+//        }
+//        viewTextSelection.pinkHighlight.setOnClickListener {
+//            Log.v(LOG_TAG, "-> onClick -> pinkHighlight")
+//            onHighlightColorItemsClicked(HighlightStyle.Pink, false)
+//        }
+//        viewTextSelection.underlineHighlight.setOnClickListener {
+//            Log.v(LOG_TAG, "-> onClick -> underlineHighlight")
+//            onHighlightColorItemsClicked(HighlightStyle.Underline, false)
+//        }
+//
+//        viewTextSelection.deleteHighlight.setOnClickListener {
+//            Log.v(LOG_TAG, "-> onClick -> deleteHighlight")
+//            dismissPopupWindow()
+//            loadUrl("javascript:clearSelection()")
+//            loadUrl("javascript:deleteThisHighlight()")
+//        }
+//
+//        viewTextSelection.copySelection.setOnClickListener {
+//            dismissPopupWindow()
+//            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
+//        }
+//        viewTextSelection.shareSelection.setOnClickListener {
+//            dismissPopupWindow()
+//            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
+//        }
+//        viewTextSelection.defineSelection.setOnClickListener {
+//            dismissPopupWindow()
+//            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
+//        }
     }
 
     @JavascriptInterface

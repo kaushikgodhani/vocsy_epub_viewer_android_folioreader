@@ -1,5 +1,6 @@
 package com.folioreader.ui.view
 
+import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.ComponentName
 import android.content.Context
@@ -23,6 +24,7 @@ class FolioSearchView : SearchView {
         val LOG_TAG: String = FolioSearchView::class.java.simpleName
     }
 
+    @SuppressLint("RestrictedApi")
     private lateinit var searchAutoComplete: SearchView.SearchAutoComplete
 
     constructor(context: Context?) : super(context)
