@@ -1,13 +1,8 @@
-//apply plugin: 'com.android.application'
-//apply plugin: 'checkstyle'
-//apply plugin: 'kotlin-android'
-//apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 android {
     namespace "com.folioreader.android.sample"
-
     compileSdkVersion versions.androidCompileSdk
 
     defaultConfig {
@@ -19,18 +14,15 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     dexOptions {
         javaMaxHeapSize "4G"
     }
-
     packagingOptions {
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/DEPENDENCIES.txt'
@@ -45,32 +37,28 @@ android {
         exclude 'META-INF/LGPL2.1'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
-
     lintOptions {
         abortOnError false
     }
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "androidx.appcompat:appcompat:$versions.appcompat"
-    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation "androidx.test.ext:junit:1.1.1"
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
     implementation project(':folioreader')
-    //implementation "com.folioreader:folioreader:$versions.folioreaderSdk"
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
-//    implementation 'org.readium.r2:r2-shared:2.x.x' // Replace with the correct version
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation "androidx.test.ext:junit:1.2.1"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
 
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
     implementation "com.fasterxml.jackson.core:jackson-core:$versions.jackson"
     implementation "com.fasterxml.jackson.core:jackson-annotations:$versions.jackson"
     implementation "com.fasterxml.jackson.core:jackson-databind:$versions.jackson"
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$versions.jackson"
 
-    //progressBar error solve
-    configurations.matching { it.name == '_internal_aapt2_binary' }.all { config ->
+    configurations.matching { it.name == '_internal_aapt2_binary' }.configureEach { config ->
         config.resolutionStrategy.eachDependency { details ->
             details.useVersion("3.3.2-5309881")
         }

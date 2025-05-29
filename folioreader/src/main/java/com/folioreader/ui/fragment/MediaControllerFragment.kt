@@ -1,5 +1,6 @@
 package com.folioreader.ui.fragment
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
@@ -69,6 +70,7 @@ class MediaControllerFragment : BottomSheetDialogFragment() {
     private var btnTextUnderlineStyle: StyleableTextView? = null
     private var btnTextColorStyle: StyleableTextView? = null
 
+    @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         Log.v(LOG_TAG, "-> onCreateDialog")
 
@@ -90,13 +92,16 @@ class MediaControllerFragment : BottomSheetDialogFragment() {
             false
         }
 
+
         initViewStates()
         onViewStateRestored(savedInstanceState)
         return bottomSheetDialog
     }
 
-    private fun bindViews(view: View) {
 
+
+
+    private fun bindViews(view: View) {
         container = view.findViewById(R.id.container)
         prevButton = view.findViewById(R.id.prev_button)
         playPauseButton = view.findViewById(R.id.play_pause_button)
@@ -167,6 +172,7 @@ class MediaControllerFragment : BottomSheetDialogFragment() {
         Log.v(LOG_TAG, "-> onDestroyView")
     }
 
+    @SuppressLint("UseRequireInsteadOfGet")
     private fun initViewStates() {
         config = AppUtil.getSavedConfig(context)!!
 
@@ -193,6 +199,7 @@ class MediaControllerFragment : BottomSheetDialogFragment() {
         initListeners()
     }
 
+    @SuppressLint("UseRequireInsteadOfGet")
     private fun initColors() {
 
         btnHalfSpeed?.setTextColor(
@@ -248,6 +255,7 @@ class MediaControllerFragment : BottomSheetDialogFragment() {
         UiUtil.setColorIntToDrawable(config.currentThemeColor, prevButton?.drawable)
     }
 
+    @SuppressLint("UseRequireInsteadOfGet")
     private fun initListeners() {
 
         playPauseButton?.setOnClickListener {
@@ -331,14 +339,17 @@ class MediaControllerFragment : BottomSheetDialogFragment() {
         btnTwoXSpeed?.isSelected = two
     }
 
+    @SuppressLint("UseRequireInsteadOfGet")
     fun setPlayButtonDrawable() {
         playPauseButton?.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_play))
     }
 
+    @SuppressLint("UseRequireInsteadOfGet")
     fun setNightMode() {
         container?.setBackgroundColor(ContextCompat.getColor(context!!, R.color.night))
     }
 
+    @SuppressLint("UseRequireInsteadOfGet")
     fun setDayMode() {
         container?.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
     }
